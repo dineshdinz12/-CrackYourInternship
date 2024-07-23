@@ -1,0 +1,27 @@
+974. Subarray Sums Divisible by K
+
+int mod(int a, int b) {
+    int ret = a % b;
+    if (ret < 0) {
+        ret += b;
+    }
+    return ret;
+}
+int subarraysDivByK(int* nums, int numsSize, int k) {
+    int* remainderCount = (int*)calloc(k, sizeof(int));
+    int prefixSum = 0;
+    int result = 0;
+    
+    // There's one subarray with sum 0 by default (empty subarray)
+    remainderCount[0] = 1;
+    
+    for (int i = 0; i < numsSize; i++) {
+        prefixSum += nums[i];
+        int remainder = mod(prefixSum, k);
+        result += remainderCount[remainder];
+        remainderCount[remainder]++;
+    }
+    
+    free(remainderCount);
+    return result;
+}
