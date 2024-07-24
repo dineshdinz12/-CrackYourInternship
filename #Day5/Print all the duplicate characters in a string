@@ -1,0 +1,33 @@
+Print all the duplicate characters in a string
+
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+#define CHAR_RANGE 256
+
+void printDuplicates(char *str) {
+    int count[CHAR_RANGE] = {0}; 
+    int length = strlen(str);
+
+    for (int i = 0; i < length; i++) {
+        count[(unsigned char)str[i]]++;
+    }
+    printf("Duplicate characters and their counts:\n");
+    bool found = false;
+    for (int i = 0; i < CHAR_RANGE; i++) {
+        if (count[i] > 1) {
+            printf("%c, count = %d\n", i, count[i]);
+            found = true;
+        }
+    }
+    if (!found) {
+        printf("No duplicate characters found.\n");
+    }}
+
+int main() {
+    char str[] = "geeksforgeeks";
+    printDuplicates(str);
+
+    return 0;
+}
