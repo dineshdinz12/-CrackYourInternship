@@ -1,0 +1,15 @@
+55. Jump Game
+
+bool canJump(int* nums, int numsSize) {
+      int farthest = 0;
+    for (int i = 0; i < numsSize; i++) {
+        if (i > farthest) {
+            return false;
+        }
+        farthest = (i + nums[i] > farthest) ? i + nums[i] : farthest;
+        if (farthest >= numsSize - 1) {
+            return true;
+        }
+    }
+    return false;
+}
