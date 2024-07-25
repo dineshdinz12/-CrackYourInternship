@@ -1,0 +1,31 @@
+67. Add Binary
+
+char* addBinary(char* a, char* b) {
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    int max_len = len_a > len_b ? len_a : len_b;
+    char *result = (char *)malloc(max_len + 2); 
+    int carry = 0;
+    int index_a = len_a - 1, index_b = len_b - 1, index_res = max_len;
+
+    result[index_res + 1] = '\0';
+
+    while (index_a >= 0 || index_b >= 0 || carry) {
+        if (index_a >= 0) {
+            carry += a[index_a] - '0';
+            index_a--;
+        }
+        if (index_b >= 0) {
+            carry += b[index_b] - '0';
+            index_b--;
+        }
+        result[index_res] = (carry % 2) + '0';
+        carry /= 2;
+        index_res--;
+    }
+    if (index_res == 0) {
+        for (int i = 0; i < max_len + 1; i++) {
+            result[i] = result[i + 1];
+        }}
+    return result;
+}
