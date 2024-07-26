@@ -1,0 +1,38 @@
+151. Reverse Words in a String
+
+char* trimSpaces(char* str) {
+    int start = 0;
+    while (isspace(str[start])) start++;
+    
+    int end = strlen(str) - 1;
+    while (end >= start && isspace(str[end])) end--;
+    
+    int len = end - start + 1;
+    char* trimmedStr = (char*)malloc((len + 1) * sizeof(char));
+    strncpy(trimmedStr, str + start, len);
+    trimmedStr[len] = '\0';
+    
+    return trimmedStr;
+}
+char* reverseWords(char* s) {
+    char* trimmed = trimSpaces(s);
+    int len = strlen(trimmed);
+    char** words = (char**)malloc(len * sizeof(char*));
+    int wordCount = 0;
+    
+    char* token = strtok(trimmed, " ");
+    while (token) {
+        words[wordCount++] = token;
+        token = strtok(NULL, " ");
+    }
+    char* result = (char*)malloc((len + 1) * sizeof(char));
+    result[0] = '\0';
+    
+    for (int i = wordCount - 1; i >= 0; i--) {
+        strcat(result, words[i]);
+        if (i > 0) strcat(result, " ");
+    }
+    free(trimmed);
+    free(words);
+    return result;
+}
