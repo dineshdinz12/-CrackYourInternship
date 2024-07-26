@@ -1,0 +1,36 @@
+Chocolate Distribution Problem
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int findMinDiff(int A[], int N, int M) {
+    if (M == 0 || N == 0) return 0;
+    qsort(A, N, sizeof(int), compare);
+    if (N < M) return -1;
+    int min_diff = INT_MAX;
+    for (int i = 0; i + M - 1 < N; i++) {
+        int diff = A[i + M - 1] - A[i];
+        if (diff < min_diff) {
+            min_diff = diff;
+        }
+    }
+    return min_diff;
+}
+
+int main() {
+    int A1[] = {3, 4, 1, 9, 56, 7, 9, 12};
+    int N1 = sizeof(A1)/sizeof(A1[0]);
+    int M1 = 5;
+    printf("Minimum difference is %d\n", findMinDiff(A1, N1, M1));
+
+    int A2[] = {7, 3, 2, 4, 9, 12, 56};
+    int N2 = sizeof(A2)/sizeof(A2[0]);
+    int M2 = 3;
+    printf("Minimum difference is %d\n", findMinDiff(A2, N2, M2));
+
+    return 0;
+}
