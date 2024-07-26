@@ -1,0 +1,62 @@
+Smallest window in a string containing all the characters of another string
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+char* smallestWindow(char* s, char* p) {
+    int s_len = strlen(s);
+    int p_len = strlen(p);
+    
+    if (p_len > s_len) {
+        return "-1";
+    }
+    int hash_p[256] = {0};
+    int hash_s[256] = {0};
+    for (int i = 0; i < p_len; i++) {
+        hash_p[p[i]]++;
+    }
+    int start = 0, start_index = -1, min_len = INT_MAX;
+    int count = 0;
+    
+    for (int j = 0; j < s_len; j++) {
+        hash_s[s[j]]++;
+        if (hash_p[s[j]] != 0 && hash_s[s[j]] <= hash_p[s[j]]) {
+            count++;
+        }
+        if (count == p_len) {
+            while (hash_s[s[start]] > hash_p[s[start]] || hash_p[s[start]] == 0) {
+                if (hash_s[s[start]] > hash_p[s[start]]) {
+                    hash_s[s[start]]--;
+                }
+                start++;
+            }
+            int window_len = j - start + 1;
+            if (min_len > window_len) {
+                min_len = window_len;
+                start_index = start;
+            }}}
+    if (start_index == -1) {
+        return "-1";
+    }
+    char* result = (char*)malloc((min_len + 1) * sizeof(char));
+    strncpy(result, s + start_index, min_len);
+    result[min_len] = '\0';
+    
+    return result;
+}
+int main() {
+    char s1[] = "timetopractice";
+    char p1[] = "toc";
+    char* result1 = smallestWindow(s1, p1);
+    printf("Smallest window: %s\n", result1);
+    free(result1);
+
+    char s2[] = "zoomlazapzo";
+    char p2[] = "oza";
+    char* result2 = smallestWindow(s2, p2);
+    printf("Smallest window: %s\n", result2);
+    free(result2);
+
+    return 0;
+}
