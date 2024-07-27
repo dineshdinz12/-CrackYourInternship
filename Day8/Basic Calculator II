@@ -1,0 +1,30 @@
+227. Basic Calculator II
+
+int calculate(const char *s) {
+    int len = strlen(s);
+    int currentNumber = 0, lastNumber = 0, result = 0;
+    char operation = '+'; 
+    for (int i = 0; i < len; i++) {
+        char currentChar = s[i];
+        if (isdigit(currentChar)) {
+            currentNumber = currentNumber * 10 + (currentChar - '0');
+        }
+        if ((!isdigit(currentChar) && !isspace(currentChar)) || i == len - 1) {
+            if (operation == '+') {
+                result += lastNumber;
+                lastNumber = currentNumber;
+            } else if (operation == '-') {
+                result += lastNumber;
+                lastNumber = -currentNumber;
+            } else if (operation == '*') {
+                lastNumber = lastNumber * currentNumber;
+            } else if (operation == '/') {
+                lastNumber = lastNumber / currentNumber;
+            }
+            operation = currentChar;
+            currentNumber = 0;
+        }
+    }
+    result += lastNumber;
+    return result;
+}
