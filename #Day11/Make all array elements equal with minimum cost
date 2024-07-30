@@ -1,0 +1,42 @@
+Make all array elements equal with minimum cost
+
+int calculateCost(int arr[], int n, int target) {
+    int cost = 0;
+    for (int i = 0; i < n; i++) {
+        cost += abs(arr[i] - target);
+    }
+    return cost;
+}
+int findMinCost(int arr[], int n) {
+    int left = arr[0];
+    int right = arr[0];
+
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < left) left = arr[i];
+        if (arr[i] > right) right = arr[i];
+    }
+
+    while (right - left > 2) {
+        int mid1 = left + (right - left) / 3;
+        int mid2 = right - (right - left) / 3;
+
+        int cost1 = calculateCost(arr, n, mid1);
+        int cost2 = calculateCost(arr, n, mid2);
+
+        if (cost1 < cost2) {
+            right = mid2;
+        } else {
+            left = mid1;
+        }
+    }
+
+    int minCost = calculateCost(arr, n, left);
+    for (int i = left + 1; i <= right; i++) {
+        int cost = calculateCost(arr, n, i);
+        if (cost < minCost) {
+            minCost = cost;
+        }
+    }
+
+    return minCost;
+}
