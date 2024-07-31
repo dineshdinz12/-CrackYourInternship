@@ -1,0 +1,29 @@
+424. Longest Repeating Character Replacement
+
+#define ALPHABET_SIZE 26
+
+int characterReplacement(char* s, int k) {
+    int freq[ALPHABET_SIZE] = {0};
+    int max_count = 0;
+    int left = 0;
+    int max_length = 0;
+    int n = strlen(s);
+    
+    for (int right = 0; right < n; ++right) {
+        freq[s[right] - 'A']++;
+      
+        if (freq[s[right] - 'A'] > max_count) {
+            max_count = freq[s[right] - 'A'];
+        }
+        
+        while ((right - left + 1) - max_count > k) {
+            freq[s[left] - 'A']--;
+            left++;
+        }
+        
+        if (right - left + 1 > max_length) {
+            max_length = right - left + 1;
+        }
+    }
+    return max_length;
+}
