@@ -1,0 +1,35 @@
+Longest Common Substring
+
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+
+#define MAX 1000
+
+int longestCommonSubstring(char *s1, char *s2) {
+    int n = strlen(s1);
+    int m = strlen(s2);
+    int dp[MAX][MAX] = {0};
+    int maxLength = 0;
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (s1[i - 1] == s2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+                maxLength = (maxLength > dp[i][j]) ? maxLength : dp[i][j];
+            } else {
+                dp[i][j] = 0;
+            }} }
+    return maxLength;
+}
+int main() {
+    char s1[] = "ABCDGH";
+    char s2[] = "ACDGHR";
+    printf("Length of Longest Common Substring: %d\n", longestCommonSubstring(s1, s2)); 
+
+    char s1_2[] = "ABC";
+    char s2_2[] = "ACB";
+    printf("Length of Longest Common Substring: %d\n", longestCommonSubstring(s1_2, s2_2)); 
+
+    return 0;
+}
