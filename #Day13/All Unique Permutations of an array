@@ -1,0 +1,70 @@
+All Unique Permutations of an array
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void backtrack(int *arr, int n, int **result, int *resultSize, int *current, int *used, int depth) {
+    if (depth == n) {
+        result[*resultSize] = (int *)malloc(n * sizeof(int));
+        for (int i = 0; i < n; i++) {
+            result[*resultSize][i] = current[i];
+        }
+        (*resultSize)++;
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (used[i] || (i > 0 && arr[i] == arr[i - 1] && !used[i - 1])) {
+            continue;
+        }
+        used[i] = 1;
+        current[depth] = arr[i];
+        backtrack(arr, n, result, resultSize, current, used, depth + 1);
+        used[i] = 0;
+    }
+}
+
+int **uniquePerms(int *arr, int n, int *returnSize) {
+    int **result = (int **)malloc(10000 * sizeof(int *));
+    int current[n];
+    int used[n];
+    *returnSize = 0;
+
+    for (int i = 0; i < n; i++) {
+        used[i] = 0;
+    }
+
+    qsort(arr, n, sizeof(int), cmp);
+    backtrack(arr, n, result, returnSize, current, used, 0);
+
+    return result;
+}
+
+int main() {
+    int n = 3;
+    int arr[] = {1, 2, 1};
+
+    int returnSize;
+    int **result = uniquePerms(arr, n, &returnSize);
+
+    for (int i = 0; i < returnSize; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ", result[i][j]);
+        }
+        printf("\n");
+        free(result[i]);
+    }
+    free(result);
+
+    return 0;
+}
