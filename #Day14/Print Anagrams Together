@@ -1,0 +1,56 @@
+Print Anagrams Together
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int compareChars(const void *a, const void *b) {
+    return (*(char *)a - *(char *)b);
+}
+
+int compareStrings(const void *a, const void *b) {
+    return strcmp(*(const char **)a, *(const char **)b);
+}
+
+void sortString(char *str) {
+    qsort(str, strlen(str), sizeof(char), compareChars);
+}
+
+void Anagrams(char *words[], int N) {
+    char **sortedWords = (char **)malloc(N * sizeof(char *));
+    for (int i = 0; i < N; i++) {
+        sortedWords[i] = strdup(words[i]);
+        sortString(sortedWords[i]);
+    }
+
+    int *printed = (int *)calloc(N, sizeof(int));
+
+    for (int i = 0; i < N; i++) {
+        if (!printed[i]) {
+            printed[i] = 1;
+            printf("%s ", words[i]);
+            for (int j = i + 1; j < N; j++) {
+                if (!printed[j] && strcmp(sortedWords[i], sortedWords[j]) == 0) {
+                    printed[j] = 1;
+                    printf("%s ", words[j]);
+                }
+            }
+            printf("\n");
+        }
+    }
+
+    for (int i = 0; i < N; i++) {
+        free(sortedWords[i]);
+    }
+    free(sortedWords);
+    free(printed);
+}
+
+int main() {
+    int N = 5;
+    char *words[] = {"act", "god", "cat", "dog", "tac"};
+
+    Anagrams(words, N);
+
+    return 0;
+}
