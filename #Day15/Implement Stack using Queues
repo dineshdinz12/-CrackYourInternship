@@ -1,0 +1,42 @@
+225. Implement Stack using Queues
+
+#include <queue>
+
+class MyStack {
+private:
+    std::queue<int> queue1;
+    std::queue<int> queue2;
+
+    void swapQueues() {
+        std::queue<int> temp = queue1;
+        queue1 = queue2;
+        queue2 = temp;
+    }
+
+public:
+    MyStack() {
+    }
+
+    void push(int x) {
+        queue2.push(x);
+        while (!queue1.empty()) {
+            queue2.push(queue1.front());
+            queue1.pop();
+        }
+        swapQueues();
+    }
+
+    int pop() {
+        int topElement = queue1.front();
+        queue1.pop();
+        return topElement;
+    }
+
+    int top() {
+        return queue1.front();
+    }
+
+    bool empty() {
+        return queue1.empty();
+    }
+};
