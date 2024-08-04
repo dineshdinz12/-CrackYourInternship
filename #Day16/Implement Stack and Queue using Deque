@@ -1,0 +1,45 @@
+Implement Stack and Queue using Deque
+
+#include <iostream>
+#include <deque>
+
+class Stack {
+private:
+    std::deque<int> deque;
+    
+public:
+    void push(int value) {
+        deque.push_back(value);
+    }
+    
+    void pop() {
+        if (!deque.empty()) {
+            deque.pop_back();
+        }
+    }
+    
+    bool is_empty() const {
+        return deque.empty();
+    }
+    
+    void print() const {
+        std::cout << "Stack: ";
+        for (int val : deque) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    Stack stack;
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    stack.print(); 
+    stack.push(4);
+    stack.print(); 
+    stack.pop();
+    stack.print(); 
+    return 0;
+}
