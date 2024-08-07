@@ -1,0 +1,35 @@
+Largest subarray with 0 sum
+
+#include <stdio.h>
+
+int maxLen(int arr[], int n) {
+    int max_len = 0;
+    
+    for (int start = 0; start < n; start++) {
+        int cum_sum = 0;
+
+    
+        for (int end = start; end < n; end++) {
+            cum_sum += arr[end];
+            
+            if (cum_sum == 0) {
+                int length = end - start + 1;
+                if (length > max_len) {
+                    max_len = length;
+                }
+            }
+        }
+    }
+    
+    return max_len;
+}
+
+int main() {
+    int arr[] = {15, -2, 2, -8, 1, 7, 10, 23};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int result = maxLen(arr, n);
+    printf("The length of the largest subarray with sum 0 is %d\n", result);
+
+    return 0;
+}
