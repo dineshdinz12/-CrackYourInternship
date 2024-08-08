@@ -1,0 +1,26 @@
+1290. Convert Binary Number in a Linked List to Integer
+
+int getDecimalValue(struct ListNode* head) {
+    int num = 0;
+    while (head != NULL) {
+        num = (num << 1) | head->val;
+        head = head->next;
+    }
+    return num;
+}
+
+struct ListNode* createNode(int val) {
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->val = val;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void printList(struct ListNode* head) {
+    struct ListNode* current = head;
+    while (current != NULL) {
+        printf("%d ", current->val);
+        current = current->next;
+    }
+    printf("\n");
+}
