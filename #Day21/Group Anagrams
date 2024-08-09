@@ -1,0 +1,68 @@
+49. Group Anagrams
+
+char* sortString(char* str) {
+    int len = strlen(str);
+    char* sortedStr = (char*)malloc((len + 1) * sizeof(char));
+    strcpy(sortedStr, str);
+    qsort(sortedStr, len, sizeof(char), (int (*)(const void*, const void*))strcmp);
+    return sortedStr;
+}
+
+int cmpStrings(const void* a, const void* b) {
+    return strcmp(*(const char**)a, *(const char**)b);
+}
+
+char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes) {
+    char** sortedStrs = (char**)malloc(strsSize * sizeof(char*));
+    
+    for (int i = 0; i < strsSize; i++) {
+        sortedStrs[i] = sortString(strs[i]);
+    }
+    
+    int* indices = (int*)malloc(strsSize * sizeof(int));
+    for (int i = 0; i < strsSize; i++) {
+        indices[i] = i;
+    }
+    
+    for (int i = 0; i < strsSize - 1; i++) {
+        for (int j = i + 1; j < strsSize; j++) {
+            if (strcmp(sortedStrs[indices[i]], sortedStrs[indices[j]]) > 0) {
+                int temp = indices[i];
+                indices[i] = indices[j];
+                indices[j] = temp;
+            }
+        }
+    }
+    
+    char*** result = (char***)malloc(strsSize * sizeof(char**));
+    *returnColumnSizes = (int*)malloc(strsSize * sizeof(int));
+    *returnSize = 0;
+
+    for (int i = 0; i < strsSize; ) {
+        int start = i;
+        int groupSize = 1;
+        
+        while (i + 1 < strsSize && strcmp(sortedStrs[indices[i]], sortedStrs[indices[i + 1]]) == 0) {
+            groupSize++;
+            i++;
+        }
+        
+        result[*returnSize] = (char**)malloc(groupSize * sizeof(char*));
+        (*returnColumnSizes)[*returnSize] = groupSize;
+        
+        for (int j = 0; j < groupSize; j++) {
+            result[*returnSize][j] = strs[indices[start + j]];
+        }
+        
+        (*returnSize)++;
+        i++;
+    }
+    
+    for (int i = 0; i < strsSize; i++) {
+        free(sortedStrs[i]);
+    }
+    free(sortedStrs);
+    free(indices);
+    
+    return result;
+}
