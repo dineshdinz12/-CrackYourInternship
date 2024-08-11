@@ -1,0 +1,35 @@
+Sort a linked list of 0s, 1s and 2s
+
+class Solution {
+public:
+    void sortList(ListNode* head) {
+        int count[3] = {0, 0, 0};  
+
+        ListNode* temp = head;
+
+        while (temp != nullptr) {
+            count[temp->val]++;
+            temp = temp->next;
+        }
+
+        temp = head;
+        int i = 0;
+
+        while (temp != nullptr) {
+            if (count[i] == 0) {
+                i++;
+            } else {
+                temp->val = i;
+                count[i]--;
+                temp = temp->next;
+            }
+        }
+    }
+    void printList(ListNode* head) {
+        while (head != nullptr) {
+            std::cout << head->val << " ";
+            head = head->next;
+        }
+        std::cout << "NULL" << std::endl;
+    }
+};
