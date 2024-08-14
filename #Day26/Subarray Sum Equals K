@@ -1,0 +1,23 @@
+560. Subarray Sum Equals K
+
+class Solution {
+public:
+    int subarraySum(std::vector<int>& nums, int k) {
+        std::unordered_map<int, int> prefixSumCount;
+        int count = 0;
+        int prefixSum = 0;
+
+        prefixSumCount[0] = 1;
+
+        for (int num : nums) {
+            prefixSum += num;
+
+            if (prefixSumCount.find(prefixSum - k) != prefixSumCount.end()) {
+                count += prefixSumCount[prefixSum - k];
+            }
+            prefixSumCount[prefixSum]++;
+        }
+
+        return count;
+    }
+};
