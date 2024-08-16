@@ -1,0 +1,71 @@
+315. Count of Smaller Numbers After Self
+
+
+typedef struct {
+    int val;
+    int index;
+} Element;
+
+void merge(Element* elements, int* count, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    Element* leftArr = (Element*)malloc(n1 * sizeof(Element));
+    Element* rightArr = (Element*)malloc(n2 * sizeof(Element));
+    
+    for (int i = 0; i < n1; i++) {
+        leftArr[i] = elements[left + i];
+    }
+    for (int i = 0; i < n2; i++) {
+        rightArr[i] = elements[mid + 1 + i];
+    }
+    
+    int i = 0, j = 0, k = left, rightCount = 0;
+    
+    while (i < n1 && j < n2) {
+        if (leftArr[i].val <= rightArr[j].val) {
+            count[leftArr[i].index] += rightCount;
+            elements[k++] = leftArr[i++];
+        } else {
+            rightCount++;
+            elements[k++] = rightArr[j++];
+        }
+    }
+    
+    while (i < n1) {
+        count[leftArr[i].index] += rightCount;
+        elements[k++] = leftArr[i++];
+    }
+    
+    while (j < n2) {
+        elements[k++] = rightArr[j++];
+    }
+    
+    free(leftArr);
+    free(rightArr);
+}
+
+void mergeSort(Element* elements, int* count, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(elements, count, left, mid);
+        mergeSort(elements, count, mid + 1, right);
+        merge(elements, count, left, mid, right);
+    }
+}
+
+int* countSmaller(int* nums, int numsSize, int* returnSize) {
+    *returnSize = numsSize;
+    int* count = (int*)calloc(numsSize, sizeof(int));
+    Element* elements = (Element*)malloc(numsSize * sizeof(Element));
+    
+    for (int i = 0; i < numsSize; i++) {
+        elements[i].val = nums[i];
+        elements[i].index = i;
+    }
+    
+    mergeSort(elements, count, 0, numsSize - 1);
+    
+    free(elements);
+    return count;
+}
