@@ -1,0 +1,45 @@
+65. Valid Number
+
+bool isNumber(char *s) {
+    bool seenDigit = false;
+    bool seenDot = false;
+    bool seenExponent = false;
+    
+    while (*s == ' ') {
+        s++;
+    }
+
+    if (*s == '+' || *s == '-') {
+        s++;
+    }
+    
+    while (*s) {
+        if (isdigit(*s)) {
+            seenDigit = true;
+        } else if (*s == '.') {
+            if (seenDot || seenExponent) {
+                return false;
+            }
+            seenDot = true;
+        } else if (*s == 'e' || *s == 'E') {
+            if (seenExponent || !seenDigit) {
+                return false;
+            }
+            seenExponent = true;
+            seenDigit = false; 
+            if (*(s + 1) == '+' || *(s + 1) == '-') {
+                s++;
+            }
+        } else if (*s == ' ') {
+            while (*s == ' ') {
+                s++;
+            }
+            return *s == '\0';
+        } else {
+            return false;
+        }
+        s++;
+    }
+    
+    return seenDigit;
+}
