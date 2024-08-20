@@ -1,0 +1,45 @@
+68. Text Justification
+
+char** fullJustify(char** words, int wordsSize, int maxWidth, int* returnSize) {
+    int i = 0, j, lineLength, spaceSlots, extraSpaces, wordCount;
+    int totalLines = 0;
+    char** result = (char**)malloc(wordsSize * sizeof(char*));  
+    
+    while (i < wordsSize) {
+        lineLength = 0;
+        wordCount = 0;
+
+        while (i + wordCount < wordsSize && lineLength + strlen(words[i + wordCount]) + wordCount <= maxWidth) {
+            lineLength += strlen(words[i + wordCount]);
+            wordCount++;
+        }
+        result[totalLines] = (char*)malloc((maxWidth + 1) * sizeof(char));  
+        result[totalLines][0] = '\0';  
+
+        if (i + wordCount >= wordsSize || wordCount == 1) {
+            for (j = 0; j < wordCount; j++) {
+                strcat(result[totalLines], words[i + j]);
+                if (j < wordCount - 1) strcat(result[totalLines], " ");
+            }
+            while (strlen(result[totalLines]) < maxWidth) strcat(result[totalLines], " ");
+        } else {
+    
+            spaceSlots = wordCount - 1;
+            extraSpaces = maxWidth - lineLength;
+
+            for (j = 0; j < wordCount; j++) {
+                strcat(result[totalLines], words[i + j]);
+                if (j < spaceSlots) {
+                    int spacesToInsert = extraSpaces / spaceSlots + (j < extraSpaces % spaceSlots ? 1 : 0);
+                    for (int k = 0; k < spacesToInsert; k++) strcat(result[totalLines], " ");
+                }
+            }
+        }
+
+        i += wordCount;
+        totalLines++;
+    }
+
+    *returnSize = totalLines;  
+    return result;  
+}
