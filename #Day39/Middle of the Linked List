@@ -1,0 +1,28 @@
+876. Middle of the Linked List
+
+struct ListNode* middleNode(struct ListNode* head) {
+    struct ListNode* slow = head;
+    struct ListNode* fast = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+struct ListNode* createNode(int val) {
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->val = val;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void printListFromNode(struct ListNode* node) {
+    while (node != NULL) {
+        printf("%d ", node->val);
+        node = node->next;
+    }
+    printf("\n");
+}
