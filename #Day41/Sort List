@@ -1,0 +1,63 @@
+148. Sort List
+
+struct ListNode* getMiddle(struct ListNode* head) {
+    if (head == NULL) return head;
+
+    struct ListNode* slow = head;
+    struct ListNode* fast = head->next;
+
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+struct ListNode* merge(struct ListNode* left, struct ListNode* right) {
+    if (left == NULL) return right;
+    if (right == NULL) return left;
+
+    struct ListNode* result = NULL;
+
+    if (left->val <= right->val) {
+        result = left;
+        result->next = merge(left->next, right);
+    } else {
+        result = right;
+        result->next = merge(left, right->next);
+    }
+
+    return result;
+}
+
+struct ListNode* sortList(struct ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    struct ListNode* middle = getMiddle(head);
+    struct ListNode* nextToMiddle = middle->next;
+
+    middle->next = NULL;
+
+    struct ListNode* left = sortList(head);
+    struct ListNode* right = sortList(nextToMiddle);
+
+    return merge(left, right);
+}
+
+struct ListNode* newNode(int val) {
+    struct ListNode* temp = (struct ListNode*)malloc(sizeof(struct ListNode));
+    temp->val = val;
+    temp->next = NULL;
+    return temp;
+}
+
+void printList(struct ListNode* head) {
+    while (head != NULL) {
+        printf("%d ", head->val);
+        head = head->next;
+    }
+    printf("\n");
+}
