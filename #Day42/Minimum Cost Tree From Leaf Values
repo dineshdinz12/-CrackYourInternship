@@ -1,0 +1,26 @@
+1130. Minimum Cost Tree From Leaf Values
+
+int mctFromLeafValues(int* arr, int arrSize) {
+    int stack[arrSize];
+    int top = -1;    
+    int result = 0;
+
+    for (int i = 0; i < arrSize; i++) {
+        while (top >= 0 && stack[top] <= arr[i]) {
+            int mid = stack[top--];
+            if (top >= 0) {
+                result += mid * (stack[top] < arr[i] ? stack[top] : arr[i]);
+            } else {
+                result += mid * arr[i];
+            }
+        }
+        stack[++top] = arr[i];
+    }
+
+    while (top > 0) {
+        result += stack[top] * stack[top - 1];
+        top--;
+    }
+
+    return result;
+}
