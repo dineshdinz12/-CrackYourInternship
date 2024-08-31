@@ -1,0 +1,30 @@
+150. Evaluate Reverse Polish Notation
+
+int isOperator(char *token) {
+    return (strcmp(token, "+") == 0 || strcmp(token, "-") == 0 ||
+            strcmp(token, "*") == 0 || strcmp(token, "/") == 0);
+}
+
+int applyOperation(int a, int b, char *operator) {
+    if (strcmp(operator, "+") == 0) return a + b;
+    if (strcmp(operator, "-") == 0) return a - b;
+    if (strcmp(operator, "*") == 0) return a * b;
+    if (strcmp(operator, "/") == 0) return a / b;
+    return 0; 
+}
+int evalRPN(char **tokens, int tokensSize) {
+    int stack[tokensSize];
+    int stackIndex = 0;
+
+    for (int i = 0; i < tokensSize; i++) {
+        if (isOperator(tokens[i])) {
+            int b = stack[--stackIndex];
+            int a = stack[--stackIndex];
+            int result = applyOperation(a, b, tokens[i]);
+            stack[stackIndex++] = result;
+        } else {
+            stack[stackIndex++] = atoi(tokens[i]);
+        }
+    }
+    return stack[0];
+}
